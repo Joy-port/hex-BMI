@@ -8,32 +8,46 @@ current: index
 <div class="bg-dark">
   <div class="container header-content">
     <h1 class="logo">
-      <a href="#">
-      <img src="https://ericacadu.github.io/HexBMI/assets/images/BMICLogo.svg" alt="BMI logo"></a>
-      </h1>
+      <a
+        href="#"
+        style="
+          background-image: url(https://ericacadu.github.io/HexBMI/assets/images/BMICLogo.svg);
+        "
+        title="BMI calculator"
+        alt="BMI logo"
+        >BMI 計算器</a
+      >
+    </h1>
     <div class="input-group">
       <div class="height-group">
         <label for="height">身高 cm</label>
-        <input type="number" class="height-input" placeholder="請輸入身高">
+        <input
+          type="number"
+          id="height-input"
+          placeholder="請輸入身高 ex: 168"
+        />
+        <p class="verify">**此欄位**</p>
       </div>
       <div class="weight-group">
         <label for="weight">體重 kg</label>
-        <input type="number" class="weight-input" placeholder="請輸入體重">
+        <input
+          type="number"
+          id="weight-input"
+          placeholder="請輸入體重 ex: 50"
+        />
+        <p class="verify">**此欄位**</p>
       </div>
+    </div>
+    <div id="circle" class="btn-container">
+      <button class="see-result" style="display: none">看結果</button>
+      <div id="run-result" class="result-underWeighted" style="display: block">
+        <p class="result-num">NUM</p>
+        <h3 class="result-msg">過輕</h3>
+        <a href="#" class="reset-btn">
+          <i class="material-icons">autorenew</i>
+        </a>
       </div>
-     <div class="see-result" id="circle">
-      <button>看結果</button>
-    </div> 
-    
-     <!--<div class="run-result result-underWeighted">
-        <p>20</p>
-        <small>BMI</small>
-        <a href="#" class="clear-btn">
-          <i class="fas fa-sync-alt"></i>  
-         </a>
-      </div>
-      <h3 class="color color-xxx">過輕</h3>-->
-    
+    </div>
   </div>
 </div>
 
@@ -41,20 +55,28 @@ current: index
   <div class="container">
     <h2 class="subTitle">BMI 紀錄</h2>
     <ul class="list">
-      
-      <li class="none">這裡還沒有資料，快來計算你的 BMI 吧！
-</li>
-      <!--
+      <li class="none">這裡還沒有資料，快來計算你的 BMI 吧！</li>
+
       <li class="ideal">
-        <h3 >理想</h3>
-         <div><small>BMI</small><p data-type="bmiNum"></p></div>
-          <div><small>weight</small><p data-type="weightNum"></p></div>
-          <div><small>height</small><p data-type="heightNum"></p></div>
+        <h3>理想</h3>
+        <div>
+          <small>BMI</small>
+          <p data-type="bmiNum">123</p>
+        </div>
+        <div>
+          <small>weight</small>
+          <p data-type="weightNum">123</p>
+        </div>
+        <div>
+          <small>height</small>
+          <p data-type="heightNum">123</p>
+        </div>
         <small>06-19-2021</small>
-        
-        
+        <a href="#" class="clear-btn">
+          <i class="material-icons-outlined"> highlight_off </i>
+        </a>
       </li>
-      <li class="underWeighted">
+      <!--    <li class="underWeighted">
         <h3 >過輕</h3>
          <div><small>BMI</small><p data-type="bmiNum"></p></div>
           <div><small>weight</small><p data-type="weightNum"></p></div>
@@ -96,16 +118,21 @@ current: index
       </li>
       -->
     </ul>
-    <div data-btn="btn-group">
-      <a href="#" class="clear-all-btn">clear all<i class="fas fa-trash"></i></a>
-    </div>
+
+    <button href="#" class="clear-all-btn" style="display: none">
+      <span class="material-icons-outlined"> delete_outline </span>
+      清除所有紀錄
+    </button>
   </div>
 </div>
 
 <div class="bg-warning">
   <h2 class="footer">
     <a href="#">
-    <img src="https://hexschool.github.io/JavaScript_HomeWork/assets/BMICLogo.png" alt="BMI logo">
+      <img
+        src="https://hexschool.github.io/JavaScript_HomeWork/assets/BMICLogo.png"
+        alt="BMI logo"
+      />
     </a>
-    </h2>
+  </h2>
 </div>

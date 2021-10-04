@@ -1,23 +1,42 @@
-const inputHeight = document.querySelector(".height-input");
-const inputWeight = document.querySelector(".weight-input");
+const inputHeight = document.querySelector("#height-input");
+const inputWeight = document.querySelector("#weight-input");
+const verifyInfo = document.querySelector(".verify");
 
 const resultBtn = document.querySelector(".see-result button");
 const circle = document.querySelector("#circle");
 const content = document.querySelector(".header-content");
 
 const list = document.querySelector(".list");
-const clearBtn = document.querySelector(".clear-btn");
+const resetBtn = document.querySelector(".reset-btn");
+const clearAllBtn = document.querySelector(".clear-all-btn");
+
+
 let data = JSON.parse(localStorage.getItem('BMI calculate')) || [] ;
 let result = {};
 
 resultBtn.addEventListener('click', BMIcalc, false);
 
+
+function inputVerify(e){
+  if(inputHeight.value.trim() == "" || inputWeight.value.trim() == ""){
+    inputHeight.classList.add("warning");
+    heightVeri.textContent = '*此欄位不得為空白';
+    heightVeri.classList.add("visible");
+  };
+
+}
+
+
+
+// 計算BMI 資料 //
+
+
+
+
+
 function BMIcalc (e){
   e.preventDefault();
-  if(inputHeight.value.trim() == "" || inputWeight.value.trim() ==""){
-    alert("請輸入身高與體重");
-    return ;
-  };
+  inputVerify(e);
   
   const weightNum = parseInt(inputWeight.value);
   const heightNum = parseInt(inputHeight.value);
@@ -65,8 +84,8 @@ function BMIcalc (e){
   renderData(data);
   
   //清空input，還原按鈕設定
-  const clearBtn = document.querySelector(".clear-btn");
-  clearBtn.addEventListener('click', clearAll, false);
+  const resetBtn = document.querySelector(".clear-btn");
+  resetBtn.addEventListener('click', clearAll, false);
   
  
 }
