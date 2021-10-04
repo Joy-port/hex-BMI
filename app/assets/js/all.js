@@ -1,192 +1,227 @@
-const inputHeight = document.querySelector("#height-input");
-const inputWeight = document.querySelector("#weight-input");
-const verifyInfo = document.querySelector(".verify");
+const inputHeight = document.querySelector(".height-group input");
+const inputWeight = document.querySelector(".weight-group input");
+const verifyHeight = document.querySelector(".height-group p"); //input verify info
+const verifyWeight = document.querySelector(".weight-group p"); //input verify info
 
-const resultBtn = document.querySelector(".see-result button");
-const circle = document.querySelector("#circle");
-const content = document.querySelector(".header-content");
+const resultBtn = document.querySelector(".see-result");
+const showResult = document.querySelector("#show-result");
+const resetBtn = document.querySelector(".reset-btn");
+
+const resultNum = document.querySelector(".result-num");
+const resultMsg = document.querySelector(".result-msg");
+
 
 const list = document.querySelector(".list");
-const resetBtn = document.querySelector(".reset-btn");
 const clearAllBtn = document.querySelector(".clear-all-btn");
 
-
 let data = JSON.parse(localStorage.getItem('BMI calculate')) || [] ;
-let result = {};
+let level ='';
 
-resultBtn.addEventListener('click', BMIcalc, false);
+//== 產生列表 ==//
+function updateData(data){
+  let str ='';
+
+  if(data.length > 0){
+    clearAllBtn.style.display = 'block';
+
+    data.forEach(item => {
+      const content = `
+        <li class="${item.level}">
+          <h3>${item.msg}</h3>
+          <div>
+            <small>BMI</small>
+            <p data-type="bmiNum">${item.bmi}</p>
+          </div>
+          <div>
+            <small>weight</small>
+            <p data-type="weightNum">${item.weight}</p>
+          </div>
+          <div>
+            <small>height</small>
+            <p data-type="heightNum">${item.height}</p>
+          </div>
+          <small>${item.date}</small>
+          <a href="#" class="clear-btn">
+            <i class="material-icons-outlined"> highlight_off </i>
+          </a>
+        </li>`;
+  
+        str += content ;
+    });  
+
+  }else{
+    clearAllBtn.style.display = 'none';
+    str += `<li class="none">這裡還沒有資料，快來計算你的 BMI 吧！</li>`;
+  }
+
+  list.innerHTML = str ;
+
+}
+
+inputHeight.addEventListener('keyup', inputVerify, false);
+inputWeight.addEventListener('keyup', inputVerify, false);
+
+resultBtn.addEventListener('click', newStatus, false);
+
+function newStatus(){
+  
+  if(inputVerify()=== "true"){
+    return ;
+  };
+
+  BMIcalc();
+
+  updateData(data);
+
+}
+
+//==  計算BMI 資料 ==//
+function BMIcalc(){
+  const weight = inputWeight.value ; 
+  const height = inputHeight.value / 100;
+
+  const bmi = Math.round((weight / Math.pow(height, 2)) * 100) / 100 ;
+
+  BMIstatus(bmi);
+
+  const bmiData = {
+    bmi: bmi,
+    weight: inputWeight.value,
+    height: inputHeight.value,
+    date: currentDate().date,
+    time: currentDate().time,
+    msg: resultMsg.textContent,
+    level: level
+  };
+  inputHeight.value = "";
+  inputWeight.value = "";
+
+  data.unshift(bmiData);
+  updateLocalStorage(data);
 
 
-function inputVerify(e){
-  if(inputHeight.value.trim() == "" || inputWeight.value.trim() == ""){
+
+}
+
+//== 判斷BMI 狀態 + 改按鈕狀態 ==//
+
+function BMIstatus(data){
+  const statusGroup = {
+    ideal: {
+      msg:'標準',
+      level:'ideal',
+      color: 'result-ideal',
+    },
+    thin: {
+      msg:'過輕',
+      level:'thin',
+      color: 'result-thin',
+    },
+    heavy: {
+      msg:'過重',
+      level:'heavy',
+      color: 'result-heavy',
+    },
+    slightlyObese: {
+      msg:'輕度肥胖',
+      level:'slightlyObese',
+      color: 'result-slightlyObese',
+    },
+    mediumObese: {
+      msg:'中度肥胖',
+      level:'mediumObese',
+      color: 'result-mediumObese',
+    },
+    severeObese: {
+      msg:'重度肥胖',
+      level:'severeObese',
+      color: 'result-severeObese'
+    }
+  };
+
+  const filterStatus = function (value){
+    let color = changeBtn(statusGroup[value]);
+    resultNum.textContent = data; 
+    resultMsg.textContent = statusGroup[value].msg;
+    level = statusGroup[value].level;
+    let msg = statusGroup[value].msg;
+    return {
+      color,
+      level,
+      msg
+    }
+  };
+ 
+  if (data <= 18.5) {
+    filterStatus("thin");
+  } else if (data <= 25) {
+    filterStatus("ideal")
+  } else if (data <= 30) {
+    filterStatus("heavy");
+  } else if (data <= 35) {
+    filterStatus("slightlyObese");
+  } else if (data <= 40) {
+    filterStatus("mediumObese");
+  } else {
+    filterStatus("severeObese");
+  }
+
+}
+//== 按鈕轉換顏色 ==//
+function changeBtn(input){
+
+  let color = input.color ;
+  resultBtn.style.display = 'none';
+  showResult.style.display = 'block';
+  showResult.classList.add(color);
+  
+  return color;
+}
+
+//==  抓取日期 ==//
+function currentDate(){
+  const now = new Date() ;
+  const year = now.getFullYear() ;
+  const month = (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1) ;  //十位數＋個位數
+  const date = (now.getDate() < 10 ? '0' : '') + now.getDate() ;
+  const time = now.getTime() ;
+
+  let value = `${year}-${month}-${date}`;
+  return {
+    date: value,
+    time: time
+  }
+
+}
+
+//== 表單驗證 ==//
+function inputVerify(){
+if(inputHeight.value.trim() == "" || inputWeight.value.trim() == ""){  
+  let alertMsg ;
+
+  if(inputHeight.value.trim() == ""){
+    verifyHeight.textContent = "*為必填項目";
+    verifyHeight.classList.add("visible");
     inputHeight.classList.add("warning");
-    heightVeri.textContent = '*此欄位不得為空白';
-    heightVeri.classList.add("visible");
-  };
-
-}
-
-
-
-// 計算BMI 資料 //
-
-
-
-
-
-function BMIcalc (e){
-  e.preventDefault();
-  inputVerify(e);
-  
-  const weightNum = parseInt(inputWeight.value);
-  const heightNum = parseInt(inputHeight.value);
-  const bmi = weightNum /(heightNum/100*heightNum/100);
-  let bmiNum = bmi.toFixed(2);
-  let dateItem = {
-    month: new Date().getMonth(),
-    day: new Date().getDate(),
-    year: new Date().getFullYear()
-  };
-  
-  let date = `${dateItem.month + 1}-${dateItem.day
-}-${dateItem.year}`;
- 
-  result.weight = weightNum;
-  result.height = heightNum;
-  result.bmi = bmiNum;
-  result.date = date;
-  data.unshift(result);
-  
-  
-  if(bmiNum <= 16 && bmiNum > 0 ){ 
-    result.name ="過輕";
-    result.className = "underWeighted";
-  }else if(bmiNum < 25 && bmiNum > 16 ){
-    result.name ="理想";
-    result.className ="ideal";
-  }else if(bmiNum < 30 && bmiNum >= 25 ){
-    result.name ="過重";
-    result.className = "overWeighted";
-  }else if(bmiNum < 35 && bmiNum >= 30 ){ 
-    result.name ="輕度肥胖";
-    result.className = "slightlyObese";
-  }else if(bmiNum < 40 && bmiNum >= 35 ){
-    result.name ="中度肥胖";
-   result.className ="mediumObese";
-  }else if(bmiNum >= 40 ){
-    result.name ="重度肥胖";
-    result.className = "severeObese";
+    alertMsg ="true";
     };
-  
-  showResult();
-  
-  addToLocalStorage(data);
-  renderData(data);
-  
-  //清空input，還原按鈕設定
-  const resetBtn = document.querySelector(".clear-btn");
-  resetBtn.addEventListener('click', clearAll, false);
-  
- 
-}
+  if(inputWeight.value.trim() == "" ){
+    verifyWeight.textContent = "*為必填項目";
+    verifyWeight.classList.add("visible");
+    inputWeight.classList.add("warning");
+    alertMsg ="true";
+  } ;
 
-//圓形按鈕變換樣式
-function showResult(){
-   
-  let createH3 = document.createElement("h3");
-  createH3.textContent = result.name;
-  createH3.classList.add('color');
- 
-  circle.classList.remove("see-result");
-  circle.classList.add("run-result");
-
-  if(result.name ==="過輕"){
-    circle.classList.add("result-underWeighted");
-    createH3.classList.add('color-underWeighted');
-  }else if(result.name ==="理想"){
-    circle.classList.add("result-ideal");
-    createH3.classList.add('color-ideal');
-  }else if(result.name ==="過重"){
-    circle.classList.add("result-overWeighted");
-    createH3.classList.add('color-overWeighted');
-  }else if(result.name ==="輕度肥胖"){
-    circle.classList.add("result-slightlyObese");
-    createH3.classList.add('color-slightlyObese');
-    
-  }else if(result.name ==="中度肥胖"){
-    circle.classList.add("result-mediumObese");
-    createH3.classList.add('color-mediumObese');
-  }else if(result.name ==="重度肥胖"){
-    circle.classList.add("result-severeObese");
-    createH3.classList.add('color-severeObese');
-  };
- 
- circle.innerHTML = `
-        <p>${result.bmi}</p>
-        <small>BMI</small>
-        <a href="#" class="clear-btn">
-          <i class="fas fa-sync-alt"></i>  
-        </a>`;
-  content.appendChild(createH3);
-
-}
-
-//data 渲染到畫面上
-
-function renderData(data){
-  let str = '';
-  if (data.length == 0){
-    let content = `<li class="none">這裡還沒有資料，快來計算你的 BMI 吧！
-</li>`;
-    str += content;
-    list.innerHTML =str;
-  };
-  data.forEach(function(item){
-    let content = `<li class="${item.className}">
-        <h3>${item.name}</h3>
-         <div><small>BMI</small><p data-type="bmiNum">${item.bmi}</p></div>
-          <div><small>weight</small><p data-type="weightNum">${item.weight}kg</p></div>
-          <div><small>height</small><p data-type="heightNum">${item.height}cm</p></div>
-        <small>${item.date}</small>
-        
-      </li>`;
-    str += content;
-  });
-  
-  console.log(str);
-  list.innerHTML = str;
-  
-  
-}
-
-//localStorage
-function addToLocalStorage(data){
-  localStorage.setItem('BMI calculate', JSON.stringify(data));
-}
-
-
-//預設渲染畫面
-renderData(data);
-
-//清除時會同時經監聽移除，改變記憶體位置，導致無法點擊的情況發生，需要重新綁定～
-function clearAll(e){
-  e.preventDefault();
-  //清空input
-  if(inputHeight.value.trim() !== "" || inputWeight.value.trim() !== ""){
-    inputHeight.value ="";
-    inputWeight.value ="";
+  return alertMsg ; //無法中斷函式QQ 還是會輸入 空值到data 中
   };
   
-
-  //還原看結果按鈕
-  circle.setAttribute("class", "see-result"); //直接清空全部-> 會監聽不到按鈕
-  circle.innerHTML = `<button>看結果</button>`;
-  
-  const resultBtnTest = document.querySelector(".see-result button");
-  resultBtnTest.addEventListener('click', BMIcalc, false);
-  
-  const colorH3 = document.querySelector(".color");
-  colorH3.parentNode.removeChild(colorH3);
-  
+  verifyHeight.classList.remove("visible");
+  verifyWeight.classList.remove("visible");
+  inputHeight.classList.remove("warning");
+  inputWeight.classList.remove("warning");
 }
 
+//== 更新localStorage ==//
+function updateLocalStorage(data){
+  localStorage.setItem('BMI', JSON.stringify(data));
+}

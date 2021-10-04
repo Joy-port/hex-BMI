@@ -1,3 +1,16 @@
+@mixin pad {
+  @media (max-width: 768px){
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: 576px){
+    @content;
+  }
+}
+
+
 $dark: #424242;
 $gray-500: rgba(255,255,255,0.18);
 $gray-600: #4A4A4A;
@@ -5,8 +18,8 @@ $light:  #efefef;
 $white: #fff;
 $warning: #FFD366;
 $ideal: #86D73F;
-$underWeighted:#31BAF9;
-$overWeighted: #FF982D;
+$thin:#31BAF9;
+$heavy: #FF982D;
 $slightlyObese:#FF6C03;
 $mediumObese:#FF6C03;
 $severeObese:#FF1200;
@@ -130,6 +143,9 @@ body{
 }
 
 .logo{
+  @include mobile{
+    display: none;
+  }
   a{
     display: block;
     text-indent: 101%;
@@ -184,19 +200,18 @@ body{
     color: $mediumObese;
   }
   }
-  .visible{
-    visibility:visible;
-  }
 
   p{
     visibility: hidden;
     color: $mediumObese;
-    margin-top: .25rem;
     margin-bottom: 0;
     text-align: right;
-    font-size: 0.875rem;
-    margin-top: -.25rem;
+    font-size: 0.65rem;
+    padding-top: .5rem;
     
+  }
+  .visible{
+    visibility:visible;
   }
 }
 
@@ -230,7 +245,7 @@ body{
 
 }
 
-#run-result{
+#show-result{
 /* test   border: 6px solid #fff;
   color: #fff; */
   position:relative;
@@ -288,7 +303,7 @@ body{
   background-color: $white;
 
   position:absolute;
-  right: -5%;
+  right: -5px;
   bottom: 0;
   
 }
@@ -302,20 +317,20 @@ body{
       background-color: $ideal;
     }
   }
-&-underWeighted{
-  border: 6px solid $underWeighted;
-  color: $underWeighted;
+&-thin{
+  border: 6px solid $thin;
+  color: $thin;
   margin-right: -36px;
    a{
-      background-color: $underWeighted;
+      background-color: $thin;
     }
 }
-&-overWeighted{
-  border: 6px solid $overWeighted;
-  color: $overWeighted;
+&-heavy{
+  border: 6px solid $heavy;
+  color: $heavy;
   margin-right: -36px;
    a{
-      background-color: $overWeighted;
+      background-color: $heavy;
     }
 }
 &-slightlyObese{
@@ -391,11 +406,11 @@ body{
   .ideal{
     border-left: 5px solid $ideal;
   }
-  .underWeighted{
-    border-left: 5px solid $underWeighted;
+  .thin{
+    border-left: 5px solid $thin;
   }
-  .overWeighted{
-    border-left: 5px solid $overWeighted;
+  .heavy{
+    border-left: 5px solid $heavy;
   }
   .slightlyObese{
     border-left: 5px solid $slightlyObese;
