@@ -369,7 +369,7 @@ body{
 
 
 .list{
-  height: calc(100vh - 565px);
+  height: 300px;
   overflow: auto;
   li{
     display: flex;
@@ -423,7 +423,7 @@ body{
   }
 }
 
-.clear-btn{
+.delete-btn{
   display: block;
   font-size: .875rem;
   color: $dark;
@@ -439,9 +439,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
 
-  width: 20%;
   border-radius: .875rem;
   border: 0px solid #000;
   color: $white;
@@ -450,12 +448,9 @@ body{
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 
-  margin: 0 auto;
-  font-size: 0.875rem;
-
-  span{
-    font-size: 1.25rem;
-    margin-right: 0.5rem;
+  p{
+    font-size: 0.875rem;
+    white-space: nowrap;
   }
   
   &:hover{

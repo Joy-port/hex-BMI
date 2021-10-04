@@ -7,6 +7,7 @@ const resultBtn = document.querySelector(".see-result");
 const showResult = document.querySelector("#show-result");
 const resetBtn = document.querySelector(".reset-btn");
 
+
 const resultNum = document.querySelector(".result-num");
 const resultMsg = document.querySelector(".result-msg");
 
@@ -14,7 +15,7 @@ const resultMsg = document.querySelector(".result-msg");
 const list = document.querySelector(".list");
 const clearAllBtn = document.querySelector(".clear-all-btn");
 
-let data = JSON.parse(localStorage.getItem('BMI calculate')) || [] ;
+let data = JSON.parse(localStorage.getItem('BMI Record')) || [] ;
 let level ='';
 
 //== 產生列表 ==//
@@ -23,25 +24,24 @@ function updateData(data){
 
   if(data.length > 0){
     clearAllBtn.style.display = 'block';
-
     data.forEach(item => {
       const content = `
-        <li class="${item.level}">
+        <li class="${item.level}" data-id="${item.time}">
           <h3>${item.msg}</h3>
           <div>
             <small>BMI</small>
-            <p data-type="bmiNum">${item.bmi}</p>
+            <p>${item.bmi}</p>
           </div>
           <div>
             <small>weight</small>
-            <p data-type="weightNum">${item.weight}</p>
+            <p>${item.weight}</p>
           </div>
           <div>
             <small>height</small>
-            <p data-type="heightNum">${item.height}</p>
+            <p>${item.height}</p>
           </div>
           <small>${item.date}</small>
-          <a href="#" class="clear-btn">
+          <a href="#" class="delete-btn">
             <i class="material-icons-outlined"> highlight_off </i>
           </a>
         </li>`;
@@ -62,6 +62,8 @@ inputHeight.addEventListener('keyup', inputVerify, false);
 inputWeight.addEventListener('keyup', inputVerify, false);
 
 resultBtn.addEventListener('click', newStatus, false);
+resetBtn.addEventListener('click', resetAll, false);
+list.addEventListener('click', deleteBtn, false);
 
 function newStatus(){
   
@@ -70,7 +72,6 @@ function newStatus(){
   };
 
   BMIcalc();
-
   updateData(data);
 
 }
@@ -84,7 +85,7 @@ function BMIcalc(){
 
   BMIstatus(bmi);
 
-  const bmiData = {
+  let bmiData = {
     bmi: bmi,
     weight: inputWeight.value,
     height: inputHeight.value,
@@ -93,13 +94,12 @@ function BMIcalc(){
     msg: resultMsg.textContent,
     level: level
   };
+
   inputHeight.value = "";
   inputWeight.value = "";
 
   data.unshift(bmiData);
   updateLocalStorage(data);
-
-
 
 }
 
@@ -178,14 +178,14 @@ function changeBtn(input){
   return color;
 }
 
+
 //==  抓取日期 ==//
 function currentDate(){
   const now = new Date() ;
   const year = now.getFullYear() ;
   const month = (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1) ;  //十位數＋個位數
   const date = (now.getDate() < 10 ? '0' : '') + now.getDate() ;
-  const time = now.getTime() ;
-
+  const time = now.getTime();
   let value = `${year}-${month}-${date}`;
   return {
     date: value,
@@ -221,7 +221,43 @@ if(inputHeight.value.trim() == "" || inputWeight.value.trim() == ""){
   inputWeight.classList.remove("warning");
 }
 
+//== 清空表單、按鈕 ==//
+function resetAll(){
+  inputHeight.value = "";
+  inputWeight.value = "";
+  resultBtn.style.display = 'block';
+  showResult.style.display = 'none';
+  showResult.setAttribute("class","");
+
+}
+
 //== 更新localStorage ==//
 function updateLocalStorage(data){
-  localStorage.setItem('BMI', JSON.stringify(data));
+  localStorage.setItem('BMI Record', JSON.stringify(data));
 }
+
+
+// 單一刪除按紐 //
+function deleteBtn(e){
+  if(!e.target.classList.contains("material-icons-outlined")){
+    return ;
+  };
+  e.preventDefault();
+  const id = parseInt(e.target.closest("LI").dataset.id);
+  
+  let deleteData = data.findIndex(item => item.time === id);
+
+  data.splice(deleteData,1);
+
+  updateLocalStorage(data);
+  updateData(data);
+
+}
+// 全部刪除按鈕 //
+
+
+function init(){
+  updateData(data);
+}
+
+init();
