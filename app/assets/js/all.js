@@ -5,25 +5,21 @@ const verifyWeight = document.querySelector(".weight-group p"); //input verify i
 
 const resultBtn = document.querySelector(".see-result");
 const showResult = document.querySelector("#show-result");
-const resetBtn = document.querySelector(".reset-btn");
-
-
 const resultNum = document.querySelector(".result-num");
 const resultMsg = document.querySelector(".result-msg");
-
-
+const resetBtn = document.querySelector(".reset-btn");
 const list = document.querySelector(".list");
 const clearAllBtn = document.querySelector(".clear-all-btn");
 
 let data = JSON.parse(localStorage.getItem('BMI Record')) || [] ;
 let level ='';
 
-//== 產生列表 ==//
+//== 畫面：產生列表 ==//
 function updateData(data){
   let str ='';
 
   if(data.length > 0){
-    clearAllBtn.style.display = 'block';
+    clearAllBtn.style.display = 'flex';
     data.forEach(item => {
       const content = `
         <li class="${item.level}" data-id="${item.time}">
@@ -58,25 +54,7 @@ function updateData(data){
 
 }
 
-inputHeight.addEventListener('keyup', inputVerify, false);
-inputWeight.addEventListener('keyup', inputVerify, false);
-
-resultBtn.addEventListener('click', newStatus, false);
-resetBtn.addEventListener('click', resetAll, false);
-list.addEventListener('click', deleteBtn, false);
-
-function newStatus(){
-  
-  if(inputVerify()=== "true"){
-    return ;
-  };
-
-  BMIcalc();
-  updateData(data);
-
-}
-
-//==  計算BMI 資料 ==//
+//== 資料：計算BMI 資料 ==//
 function BMIcalc(){
   const weight = inputWeight.value ; 
   const height = inputHeight.value / 100;
@@ -103,8 +81,22 @@ function BMIcalc(){
 
 }
 
-//== 判斷BMI 狀態 + 改按鈕狀態 ==//
+//== 資料：抓取日期 ==//
+function currentDate(){
+  const now = new Date() ;
+  const year = now.getFullYear() ;
+  const month = (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1) ;  //十位數＋個位數
+  const date = (now.getDate() < 10 ? '0' : '') + now.getDate() ;
+  const time = now.getTime();
+  let value = `${year}-${month}-${date}`;
+  return {
+    date: value,
+    time: time
+  }
 
+}
+
+//== 資料＋畫面：判斷BMI 狀態 + 改按鈕狀態 ==//
 function BMIstatus(data){
   const statusGroup = {
     ideal: {
@@ -167,7 +159,7 @@ function BMIstatus(data){
   }
 
 }
-//== 按鈕轉換顏色 ==//
+//== 畫面：按鈕轉換顏色 ==//
 function changeBtn(input){
 
   let color = input.color ;
@@ -178,23 +170,19 @@ function changeBtn(input){
   return color;
 }
 
+//== 互動＋畫面：點擊按鈕新增狀態＋產生畫面 ==//
+function newStatus(){
+  
+  if(inputVerify()=== "true"){
+    return ;
+  };
 
-//==  抓取日期 ==//
-function currentDate(){
-  const now = new Date() ;
-  const year = now.getFullYear() ;
-  const month = (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1) ;  //十位數＋個位數
-  const date = (now.getDate() < 10 ? '0' : '') + now.getDate() ;
-  const time = now.getTime();
-  let value = `${year}-${month}-${date}`;
-  return {
-    date: value,
-    time: time
-  }
+  BMIcalc();
+  updateData(data);
 
 }
 
-//== 表單驗證 ==//
+//== 互動＋畫面：表單驗證 ==//
 function inputVerify(){
 if(inputHeight.value.trim() == "" || inputWeight.value.trim() == ""){  
   let alertMsg ;
@@ -221,23 +209,24 @@ if(inputHeight.value.trim() == "" || inputWeight.value.trim() == ""){
   inputWeight.classList.remove("warning");
 }
 
-//== 清空表單、按鈕 ==//
+//== 互動＋畫面：清空表單、按鈕 or 繼續計算 ==//
 function resetAll(){
-  inputHeight.value = "";
-  inputWeight.value = "";
-  resultBtn.style.display = 'block';
-  showResult.style.display = 'none';
-  showResult.setAttribute("class","");
-
+  if(inputVerify()=== "true"){
+    resultBtn.style.display = 'block';
+    showResult.style.display = 'none';
+    showResult.setAttribute("class","");
+  }else{
+    newStatus();
+  };
 }
 
-//== 更新localStorage ==//
+//== 資料：更新localStorage ==//
 function updateLocalStorage(data){
   localStorage.setItem('BMI Record', JSON.stringify(data));
 }
 
 
-// 單一刪除按紐 //
+//== ALL：單一刪除按紐 ==//
 function deleteBtn(e){
   if(!e.target.classList.contains("material-icons-outlined")){
     return ;
@@ -253,11 +242,33 @@ function deleteBtn(e){
   updateData(data);
 
 }
-// 全部刪除按鈕 //
+
+//== ALL：全部刪除按鈕 ==//
+function deleteAllData(e){
+  e.preventDefault();  
+  if(e.target.closest(".clear-all-btn").nodeName !== "BUTTON"){
+    return ;
+  }
+  const total = data.length;
+  data.splice(0, total);
+
+  updateLocalStorage(data);
+  updateData(data);
+
+}
 
 
+//預設階段//
 function init(){
   updateData(data);
+
+  inputHeight.addEventListener('keyup', inputVerify, false);
+  inputWeight.addEventListener('keyup', inputVerify, false);
+
+  resultBtn.addEventListener('click', newStatus, false);
+  resetBtn.addEventListener('click', resetAll, false);
+  list.addEventListener('click', deleteBtn, false);
+  clearAllBtn.addEventListener('click', deleteAllData, false);
 }
 
 init();
