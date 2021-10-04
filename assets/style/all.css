@@ -107,6 +107,10 @@ body {
           align-items: center;
   gap: 1rem; }
 
+@media (max-width: 576px) {
+  .logo {
+    display: none; } }
+
 .logo a {
   display: block;
   text-indent: 101%;
@@ -162,17 +166,16 @@ body {
   .input-group .warning::placeholder {
     color: #FF6C03; }
 
-.input-group .visible {
-  visibility: visible; }
-
 .input-group p {
   visibility: hidden;
   color: #FF6C03;
-  margin-top: .25rem;
   margin-bottom: 0;
   text-align: right;
-  font-size: 0.875rem;
-  margin-top: -.25rem; }
+  font-size: 0.65rem;
+  padding-top: .5rem; }
+
+.input-group .visible {
+  visibility: visible; }
 
 .btn-container {
   width: 120px;
@@ -200,7 +203,7 @@ body {
   .see-result:active {
     background-color: #DEA821; }
 
-#run-result {
+#show-result {
   /* test   border: 6px solid #fff;
   color: #fff; */
   position: relative;
@@ -220,7 +223,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center; }
-  #run-result h3 {
+  #show-result h3 {
     font-size: 2rem;
     white-space: nowrap; }
 
@@ -261,7 +264,7 @@ body {
   color: #424242;
   background-color: #fff;
   position: absolute;
-  right: -5%;
+  right: -5px;
   bottom: 0; }
 
 .result-ideal {
@@ -271,18 +274,18 @@ body {
   .result-ideal a {
     background-color: #86D73F; }
 
-.result-underWeighted {
+.result-thin {
   border: 6px solid #31BAF9;
   color: #31BAF9;
   margin-right: -36px; }
-  .result-underWeighted a {
+  .result-thin a {
     background-color: #31BAF9; }
 
-.result-overWeighted {
+.result-heavy {
   border: 6px solid #FF982D;
   color: #FF982D;
   margin-right: -36px; }
-  .result-overWeighted a {
+  .result-heavy a {
     background-color: #FF982D; }
 
 .result-slightlyObese {
@@ -351,9 +354,9 @@ body {
             justify-content: center; }
   .list .ideal {
     border-left: 5px solid #86D73F; }
-  .list .underWeighted {
+  .list .thin {
     border-left: 5px solid #31BAF9; }
-  .list .overWeighted {
+  .list .heavy {
     border-left: 5px solid #FF982D; }
   .list .slightlyObese {
     border-left: 5px solid #FF6C03; }
