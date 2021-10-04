@@ -354,16 +354,28 @@ body {
             justify-content: center; }
   .list .ideal {
     border-left: 5px solid #86D73F; }
+    .list .ideal a:hover {
+      color: #86D73F; }
   .list .thin {
     border-left: 5px solid #31BAF9; }
+    .list .thin a:hover {
+      color: #31BAF9; }
   .list .heavy {
     border-left: 5px solid #FF982D; }
+    .list .heavy a:hover {
+      color: #FF982D; }
   .list .slightlyObese {
     border-left: 5px solid #FF6C03; }
+    .list .slightlyObese a:hover {
+      color: #FF6C03; }
   .list .mediumObese {
     border-left: 5px solid #FF6C03; }
+    .list .mediumObese a:hover {
+      color: #FF6C03; }
   .list .severeObese {
     border-left: 5px solid #FF1200; }
+    .list .severeObese a:hover {
+      color: #FF1200; }
 
 .delete-btn {
   display: block;
@@ -386,13 +398,20 @@ body {
   border-radius: .875rem;
   border: 0px solid #000;
   color: #fff;
-  background-color: rgba(77, 77, 77, 0.2); }
+  background-color: rgba(77, 77, 77, 0.2);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 0 auto;
+  margin-top: 1rem; }
   .clear-all-btn p {
     font-size: 0.875rem;
     white-space: nowrap; }
   .clear-all-btn:hover {
     background-color: #212121CC;
-    color: #efefef; }
+    color: #efefef;
+    cursor: pointer; }
 
 .d-none {
   display: none; }

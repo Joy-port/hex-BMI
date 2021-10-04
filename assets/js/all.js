@@ -8,19 +8,19 @@ var verifyWeight = document.querySelector(".weight-group p"); //input verify inf
 
 var resultBtn = document.querySelector(".see-result");
 var showResult = document.querySelector("#show-result");
-var resetBtn = document.querySelector(".reset-btn");
 var resultNum = document.querySelector(".result-num");
 var resultMsg = document.querySelector(".result-msg");
+var resetBtn = document.querySelector(".reset-btn");
 var list = document.querySelector(".list");
 var clearAllBtn = document.querySelector(".clear-all-btn");
 var data = JSON.parse(localStorage.getItem('BMI Record')) || [];
-var level = ''; //== 產生列表 ==//
+var level = ''; //== 畫面：產生列表 ==//
 
 function updateData(data) {
   var str = '';
 
   if (data.length > 0) {
-    clearAllBtn.style.display = 'block';
+    clearAllBtn.style.display = 'flex';
     data.forEach(function (item) {
       var content = "\n        <li class=\"".concat(item.level, "\" data-id=\"").concat(item.time, "\">\n          <h3>").concat(item.msg, "</h3>\n          <div>\n            <small>BMI</small>\n            <p>").concat(item.bmi, "</p>\n          </div>\n          <div>\n            <small>weight</small>\n            <p>").concat(item.weight, "</p>\n          </div>\n          <div>\n            <small>height</small>\n            <p>").concat(item.height, "</p>\n          </div>\n          <small>").concat(item.date, "</small>\n          <a href=\"#\" class=\"delete-btn\">\n            <i class=\"material-icons-outlined\"> highlight_off </i>\n          </a>\n        </li>");
       str += content;
@@ -31,23 +31,7 @@ function updateData(data) {
   }
 
   list.innerHTML = str;
-}
-
-inputHeight.addEventListener('keyup', inputVerify, false);
-inputWeight.addEventListener('keyup', inputVerify, false);
-resultBtn.addEventListener('click', newStatus, false);
-resetBtn.addEventListener('click', resetAll, false);
-list.addEventListener('click', deleteBtn, false);
-
-function newStatus() {
-  if (inputVerify() === "true") {
-    return;
-  }
-
-  ;
-  BMIcalc();
-  updateData(data);
-} //==  計算BMI 資料 ==//
+} //== 資料：計算BMI 資料 ==//
 
 
 function BMIcalc() {
@@ -68,7 +52,22 @@ function BMIcalc() {
   inputWeight.value = "";
   data.unshift(bmiData);
   updateLocalStorage(data);
-} //== 判斷BMI 狀態 + 改按鈕狀態 ==//
+} //== 資料：抓取日期 ==//
+
+
+function currentDate() {
+  var now = new Date();
+  var year = now.getFullYear();
+  var month = (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1); //十位數＋個位數
+
+  var date = (now.getDate() < 10 ? '0' : '') + now.getDate();
+  var time = now.getTime();
+  var value = "".concat(year, "-").concat(month, "-").concat(date);
+  return {
+    date: value,
+    time: time
+  };
+} //== 資料＋畫面：判斷BMI 狀態 + 改按鈕狀態 ==//
 
 
 function BMIstatus(data) {
@@ -131,7 +130,7 @@ function BMIstatus(data) {
   } else {
     filterStatus("severeObese");
   }
-} //== 按鈕轉換顏色 ==//
+} //== 畫面：按鈕轉換顏色 ==//
 
 
 function changeBtn(input) {
@@ -140,22 +139,18 @@ function changeBtn(input) {
   showResult.style.display = 'block';
   showResult.classList.add(color);
   return color;
-} //==  抓取日期 ==//
+} //== 互動＋畫面：點擊按鈕新增狀態＋產生畫面 ==//
 
 
-function currentDate() {
-  var now = new Date();
-  var year = now.getFullYear();
-  var month = (now.getMonth() + 1 < 10 ? '0' : '') + (now.getMonth() + 1); //十位數＋個位數
+function newStatus() {
+  if (inputVerify() === "true") {
+    return;
+  }
 
-  var date = (now.getDate() < 10 ? '0' : '') + now.getDate();
-  var time = now.getTime();
-  var value = "".concat(year, "-").concat(month, "-").concat(date);
-  return {
-    date: value,
-    time: time
-  };
-} //== 表單驗證 ==//
+  ;
+  BMIcalc();
+  updateData(data);
+} //== 互動＋畫面：表單驗證 ==//
 
 
 function inputVerify() {
@@ -187,21 +182,25 @@ function inputVerify() {
   verifyWeight.classList.remove("visible");
   inputHeight.classList.remove("warning");
   inputWeight.classList.remove("warning");
-} //== 清空表單、按鈕 ==//
+} //== 互動＋畫面：清空表單、按鈕 or 繼續計算 ==//
 
 
 function resetAll() {
-  inputHeight.value = "";
-  inputWeight.value = "";
-  resultBtn.style.display = 'block';
-  showResult.style.display = 'none';
-  showResult.setAttribute("class", "");
-} //== 更新localStorage ==//
+  if (inputVerify() === "true") {
+    resultBtn.style.display = 'block';
+    showResult.style.display = 'none';
+    showResult.setAttribute("class", "");
+  } else {
+    newStatus();
+  }
+
+  ;
+} //== 資料：更新localStorage ==//
 
 
 function updateLocalStorage(data) {
   localStorage.setItem('BMI Record', JSON.stringify(data));
-} // 單一刪除按紐 //
+} //== ALL：單一刪除按紐 ==//
 
 
 function deleteBtn(e) {
@@ -218,11 +217,31 @@ function deleteBtn(e) {
   data.splice(deleteData, 1);
   updateLocalStorage(data);
   updateData(data);
-} // 全部刪除按鈕 //
+} //== ALL：全部刪除按鈕 ==//
+
+
+function deleteAllData(e) {
+  e.preventDefault();
+
+  if (e.target.closest(".clear-all-btn").nodeName !== "BUTTON") {
+    return;
+  }
+
+  var total = data.length;
+  data.splice(0, total);
+  updateLocalStorage(data);
+  updateData(data);
+} //預設階段//
 
 
 function init() {
   updateData(data);
+  inputHeight.addEventListener('keyup', inputVerify, false);
+  inputWeight.addEventListener('keyup', inputVerify, false);
+  resultBtn.addEventListener('click', newStatus, false);
+  resetBtn.addEventListener('click', resetAll, false);
+  list.addEventListener('click', deleteBtn, false);
+  clearAllBtn.addEventListener('click', deleteAllData, false);
 }
 
 init();
