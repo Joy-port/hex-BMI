@@ -1,0 +1,111 @@
+---
+title: BMI 計算機
+layout: ./app/layout.ejs
+engine: ejs
+current: index
+---
+
+<div class="bg-dark">
+  <div class="container header-content">
+    <h1 class="logo">
+      <a href="#">
+      <img src="https://ericacadu.github.io/HexBMI/assets/images/BMICLogo.svg" alt="BMI logo"></a>
+      </h1>
+    <div class="input-group">
+      <div class="height-group">
+        <label for="height">身高 cm</label>
+        <input type="number" class="height-input" placeholder="請輸入身高">
+      </div>
+      <div class="weight-group">
+        <label for="weight">體重 kg</label>
+        <input type="number" class="weight-input" placeholder="請輸入體重">
+      </div>
+      </div>
+     <div class="see-result" id="circle">
+      <button>看結果</button>
+    </div> 
+    
+     <!--<div class="run-result result-underWeighted">
+        <p>20</p>
+        <small>BMI</small>
+        <a href="#" class="clear-btn">
+          <i class="fas fa-sync-alt"></i>  
+         </a>
+      </div>
+      <h3 class="color color-xxx">過輕</h3>-->
+    
+  </div>
+</div>
+
+<div class="bg-light">
+  <div class="container">
+    <h2 class="subTitle">BMI 紀錄</h2>
+    <ul class="list">
+      
+      <li class="none">這裡還沒有資料，快來計算你的 BMI 吧！
+</li>
+      <!--
+      <li class="ideal">
+        <h3 >理想</h3>
+         <div><small>BMI</small><p data-type="bmiNum"></p></div>
+          <div><small>weight</small><p data-type="weightNum"></p></div>
+          <div><small>height</small><p data-type="heightNum"></p></div>
+        <small>06-19-2021</small>
+        
+        
+      </li>
+      <li class="underWeighted">
+        <h3 >過輕</h3>
+         <div><small>BMI</small><p data-type="bmiNum"></p></div>
+          <div><small>weight</small><p data-type="weightNum"></p></div>
+          <div><small>height</small><p data-type="heightNum"></p></div>
+        <small class="data-date">06-19-2021</small>
+        
+      </li>
+      <li class="overWeighted">
+        <h3 >過重</h3>
+         <div><small>BMI</small><p data-type="bmiNum"></p></div>
+          <div><small>weight</small><p data-type="weightNum"></p></div>
+          <div><small>height</small><p data-type="heightNum"></p></div>
+        <small class="data-date">06-19-2021</small>
+        
+      </li>
+      <li class="slightlyObese">
+        <h3 >輕度肥胖</h3>
+         <div><small>BMI</small><p data-type="bmiNum"></p></div>
+          <div><small>weight</small><p data-type="weightNum"></p></div>
+          <div><small>height</small><p data-type="heightNum"></p></div>
+        <small class="data-date">06-19-2021</small>
+        
+      </li>
+      <li class="mediumObese">
+        <h3 >中度肥胖</h3>
+         <div><small>BMI</small><p data-type="bmiNum"></p></div>
+          <div><small>weight</small><p data-type="weightNum"></p></div>
+          <div><small>height</small><p data-type="heightNum"></p></div>
+        <small class="data-date">06-19-2021</small>
+        
+      </li>
+      <li class="severeObese">
+        <h3 >重度肥胖</h3>
+          <div><small>BMI</small><p data-type="bmiNum"></p></div>
+          <div><small>weight</small><p data-type="weightNum"></p></div>
+          <div><small>height</small><p data-type="heightNum"></p></div>
+        <small class="data-date">06-19-2021</small>
+        
+      </li>
+      -->
+    </ul>
+    <div data-btn="btn-group">
+      <a href="#" class="clear-all-btn">clear all<i class="fas fa-trash"></i></a>
+    </div>
+  </div>
+</div>
+
+<div class="bg-warning">
+  <h2 class="footer">
+    <a href="#">
+    <img src="https://hexschool.github.io/JavaScript_HomeWork/assets/BMICLogo.png" alt="BMI logo">
+    </a>
+    </h2>
+</div>
