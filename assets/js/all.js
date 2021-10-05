@@ -231,13 +231,31 @@ function deleteAllData(e) {
   data.splice(0, total);
   updateLocalStorage(data);
   updateData(data);
+  resetAll();
+} // keyup 監聽//
+
+
+function inputByKey(e) {
+  if (e.key === "Enter") {
+    if (resultBtn.style.display === "block") {
+      newStatus();
+    } else {
+      resetAll();
+    }
+
+    ;
+  } else {
+    return;
+  }
+
+  ;
 } //預設階段//
 
 
 function init() {
   updateData(data);
-  inputHeight.addEventListener('keyup', inputVerify, false);
-  inputWeight.addEventListener('keyup', inputVerify, false);
+  inputHeight.addEventListener('keyup', inputByKey, false);
+  inputWeight.addEventListener('keyup', inputByKey, false);
   resultBtn.addEventListener('click', newStatus, false);
   resetBtn.addEventListener('click', resetAll, false);
   list.addEventListener('click', deleteBtn, false);
