@@ -158,7 +158,7 @@ function inputVerify() {
     var alertMsg;
 
     if (inputHeight.value.trim() == "") {
-      verifyHeight.textContent = "*為必填項目";
+      verifyHeight.textContent = "*請記得輸入身高 XXX cm 呦～";
       verifyHeight.classList.add("visible");
       inputHeight.classList.add("warning");
       alertMsg = "true";
@@ -167,7 +167,7 @@ function inputVerify() {
     ;
 
     if (inputWeight.value.trim() == "") {
-      verifyWeight.textContent = "*為必填項目";
+      verifyWeight.textContent = "*請在此處輸入體重 XX kg 呦～";
       verifyWeight.classList.add("visible");
       inputWeight.classList.add("warning");
       alertMsg = "true";
