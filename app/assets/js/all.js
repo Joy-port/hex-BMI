@@ -188,13 +188,13 @@ if(inputHeight.value.trim() == "" || inputWeight.value.trim() == ""){
   let alertMsg ;
 
   if(inputHeight.value.trim() == ""){
-    verifyHeight.textContent = "*為必填項目";
+    verifyHeight.textContent = "*請記得輸入身高 XXX cm 呦～";
     verifyHeight.classList.add("visible");
     inputHeight.classList.add("warning");
     alertMsg ="true";
     };
   if(inputWeight.value.trim() == "" ){
-    verifyWeight.textContent = "*為必填項目";
+    verifyWeight.textContent = "*請在此處輸入體重 XX kg 呦～";
     verifyWeight.classList.add("visible");
     inputWeight.classList.add("warning");
     alertMsg ="true";
@@ -202,7 +202,7 @@ if(inputHeight.value.trim() == "" || inputWeight.value.trim() == ""){
 
   return alertMsg ; //無法中斷函式QQ 還是會輸入 空值到data 中
   };
-  
+
   verifyHeight.classList.remove("visible");
   verifyWeight.classList.remove("visible");
   inputHeight.classList.remove("warning");
